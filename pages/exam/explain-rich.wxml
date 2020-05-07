@@ -1,0 +1,105 @@
+<view class="page {{hideNos == false ? 'has-btm' : ''}}">
+  <view class="page__hd weui-flex top-position">
+    <view class="weui-flex__item {{viewId == 'question' ? 'active' : ''}}" data-vid="question" bindtap="position">
+      <image src="../../images/icon-marker.png"></image> 考题
+    </view>
+    <view class="weui-flex__item {{viewId == 'answers' ? 'active' : ''}}" data-vid="answers" bindtap="position">
+      <image src="../../images/icon-marker.png"></image> 参考答案
+    </view>
+    <view class="weui-flex__item {{viewId == 'explain' ? 'active' : ''}}" data-vid="explain" bindtap="position">
+      <image src="../../images/icon-marker.png"></image> 考题解析
+    </view>
+  </view>
+
+  <scroll-view scroll-y="true" scroll-with-animation="true" scroll-into-view="{{viewId}}" style="height:{{viewHeight}}px;margin-top:40px" animation="{{turningData}}" bindlongpress="turningStart" bindtouchmove="turningMove" bindtouchend="turningEnd">
+    <view class="page__bd" id="question" style="padding-top:1px">
+      <view class="question">
+        <rich-text nodes="{{question}}"></rich-text>
+      </view>
+    </view>
+
+    <view class="page__hd" id="answers" style="padding-top:1px">
+      <view class="answer-list">
+        <view class="rich-item" wx:for="{{answer_list}}" wx:key="*this">
+          <view class="q">
+            <view class="k">问题{{item.no}} ({{item.s}}分)</view>
+            <rich-text nodes="{{item.q}}"></rich-text>
+          </view>
+          <view class="a">
+            <view class="k">参考答案</view>
+            <view wx:if="{{item.a == 'VIP'}}" style="color:#777;font-size:15px">
+              仅限VIP用户查看。<navigator class="color-link" style="display:inline-block" url="/pages/my/vip-buy">[ 立即开通 ]</navigator>
+            </view>
+            <rich-text wx:else nodes="{{item.a}}"></rich-text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="page__hd" id="explain" hidden="{{source_subject == null}}">
+      <view class="explain-source" bindtap="gotoPage" data-url="/pages/question/subject?id={{source_subject_id}}">
+        <icon type="info_circle" size="15" color='#777'></icon> {{source_subject}}</view>
+      <view class="explain-title">
+        考题解析
+      </view>
+      <view class="explain-content">
+        <block wx:if="{{explain_freedom == 'VIP'}}">
+          <view class="vip-upgrade">
+            <view class="tt">
+              <text>{{explain_adtxt || '升级VIP可查看解析'}}</text>
+            </view>
+            <button wx:if="{{isIOS==false}}" bindtap="gotoPage" data-url="/pages/my/vip-buy">立即升级</button>
+          </view>
+        </block>
+        <block wx:if="{{explain_freedom == 'LIMIT'}}">
+          <view class="explain-limit">
+            <rich-text nodes="{{explain}}"></rich-text>
+            <view class="gradual"></view>
+          </view>
+          <view class="vip-upgrade min">
+            <view class="tt">
+              <text>{{explain_adtxt || '升级VIP会员查看完整解析\n更享免费无限答题哦~'}}</text>
+            </view>
+            <button wx:if="{{isIOS==false}}" bindtap="gotoPage" data-url="/pages/my/vip-buy">立即升级</button>
+            <view class="clearfix"></view>
+          </view>
+        </block>
+        <block wx:else>
+          <rich-text nodes="{{explain}}"></rich-text>
+        </block>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
+<view class="float-btns">
+  <view class="zbtn" bindtap="gotoPage" data-url="/pages/index/h5?url=m%2ffeedback.htm%3fuser%3d{{user}}%26type%3dCorrect-{{currentQuestionId}}">
+    <text class="L2">考题\n纠错</text>
+  </view>
+  <form bindsubmit="fav">
+    <button class="zbtn" formType="submit">
+      <image src="../../images/star{{isFav ? '-filled' : ''}}.png" class="fav"></image>
+    </button>
+  </form>
+  <form bindsubmit="shareboxOpen">
+    <button class="zbtn" formType="submit">
+      <image src="../../images/share.png" class="share"></image>
+    </button>
+  </form>
+</view>
+
+<import src="../comps/z-sharebox.wxml" />
+<template is="z-sharebox" data="{{...shareboxData}}" />
+
+<view class="page-nos" hidden="{{hideNos}}">
+  <view class="el page-prev" bindtap="goPrev" hover-class="go-hover">
+    <image src="../../images/arrow-left-fff.png"></image>
+  </view>
+  <view class="el page-no">
+    {{qidsNo}}/{{qidsTotal}}
+  </view>
+  <view class="el page-next" bindtap="goNext" hover-class="go-hover">
+    <image src="../../images/arrow-right-fff.png"></image>
+  </view>
+  <view class="clearfix"></view>
+</view>

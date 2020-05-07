@@ -1,0 +1,76 @@
+<view class="page {{miniScreen}}" style="height:{{pageHeight}}px">
+  <view class="page__hd act-users">
+    <view class="user foo animated slideInLeft">
+      <view class="headimg">
+        <image src="{{fooHeadimg}}"></image>
+      </view>
+      <view class="nick">{{fooNick}}</view>
+    </view>
+    <view class="user bar animated slideInRight">
+      <view class="headimg">
+        <image src="{{barHeadimg}}"></image>
+      </view>
+      <view class="nick">{{barNick}}</view>
+    </view>
+    <view wx:if="{{showResult}}" class="user foo r-scope animated slideInLeft">
+      <view class="headimg" style="width:{{fooScopeWidth}}px">
+        <text>{{fooScope || '0'}}</text>分
+      </view>
+    </view>
+    <view wx:if="{{showResult}}" class="user bar r-scope animated slideInRight">
+      <view class="headimg" style="width:{{barScopeWidth}}px">
+        <text>{{barScope || '0'}}</text>分
+      </view>
+    </view>
+    <view class="countdown" wx:if="{{countdown != null}}">
+      <text>{{countdown}}</text>
+    </view>
+  </view>
+
+  <view class="page__hd" hidden="{{showResult == true}}" wx:if="{{question}}">
+    <view class="question {{questionClazz}} {{showClazz}}" style="height:{{questionHeight}}px">
+      <rich-text nodes="{{question}}"></rich-text>
+    </view>
+    <view class="answers">
+      <view class="scope foo">
+        <view class="num {{fooScopeClazz}}">{{fooScope || 0}}</view>
+        <view class="progress">
+          <view style="height:{{fooScope * 100 / 120}}%"></view>
+        </view>
+      </view>
+      <view class="scope bar">
+        <view class="num {{barScopeClazz}}">{{barScope || 0}}</view>
+        <view class="progress">
+          <view style="height:{{barScope * 100 / 120}}%"></view>
+        </view>
+      </view>
+      <view class="items {{showClazz}}" wx:if="{{!!answer}}">
+       <view  wx:for="{{answer}}" wx:key="*this">
+       <view class="a {{item.answerNumber == selectKey ? 'select' : ''}} {{item.answerNumber == rightKey ? 'Y' : 'N'}}" bindtap="selectAnswer" data-key="{{item.answerNumber}}">
+       <view>{{item.answerNumber}}{{item.answerContent}}</view>
+       </view>
+       </view>
+
+       
+      </view>
+    </view>
+    <view class="q-source">{{sourceSubject || ''}}</view>
+  </view>
+
+  <view hidden="{{showResult == false}}" style="margin-top:-12px" class="animated fadeIn">
+    <view class="mask {{isWin ? 'win' : ''}}"></view>
+    <view class="win-img" style="z-index:999">
+      <image class="user" src="{{fooHeadimg}}"></image>
+      <view>
+        <image class="banner" src="../../images/pk/{{isWin ? 'result_win.png' : 'result_lost.png'}}"></image>
+      </view>
+    </view>
+    <view class="op-btns">
+      <button type="button" type="primary" open-type="share">分享战绩</button>
+      <button type="button" type="default" bindtap="beginPk">再来一局</button>
+      <button type="button" type="default" bindtap="explainGo" class="exp">
+        <image src="../../images/pk/ic_txt2.png"></image> 查看题目解析
+      </button>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,93 @@
+<view class="page">
+  <view class="page__hd subtitle">
+    <view class="pull-left">{{subject.qtype}}</view>
+    <view class="pull-right seq-no">
+      <text>{{subject.xh}}</text>/{{seqTotal}}
+    </view>
+    <view class="clearfix"></view>
+  </view>
+
+  <view class="page__bd question-area" style="min-height:{{qareaHeight}}px;" animation="{{turningData}}" bindlongpress="turningStart" bindtouchmove="turningMove" bindtouchend="turningEnd">
+    <view class="question">
+      <rich-text nodes="{{subject.content}}"></rich-text>
+    </view>
+    <view class="answer-list">
+    <radio-group bindchange="answer" >
+      <block wx:for="{{subject.answerList}}" wx:key="*this">
+
+        <view class="item {{item.clazz}}" data-key="{{item.answerNumber}}">
+         
+           <radio class="key" value="{{item.answerNumber}}"></radio>
+          <view class="text">
+            <rich-text nodes="{{item.answerNumber}}{{item.answerContent}}"></rich-text>
+          </view>
+          <view class="clearfix"></view>
+        </view>
+      </block>
+      </radio-group>
+    </view>
+  </view>
+
+  <view class="fix-foobar">
+    <view class="weui-flex">
+      <view class="weui-flex__item">
+        <form bindsubmit="prevQuestion" hidden="{{isFirst}}">
+          <button class="zbtn" formType="submit">
+            <image src="../../images/arrow-left.png"></image>
+          </button>
+        </form>
+      </view>
+      <view class="weui-flex__item">
+        <form bindsubmit="fav">
+          <button class="zbtn" formType="submit">
+            <image src="../../images/star{{isFav ? '-filled' : ''}}.png" class="fav"></image>
+          </button>
+        </form>
+      </view>
+      <view class="weui-flex__item">
+        <form bindsubmit="showDtcard">
+          <button class="zbtn" formType="submit">
+            <image src="../../images/exam-card.png" style="margin-top:8px;width:26px;height:26px;"></image>
+          </button>
+        </form>
+      </view>
+      <view class="weui-flex__item">
+        <form bindsubmit="nextQuestion" hidden="{{isLast}}">
+          <button class="zbtn" formType="submit">
+            <image src="../../images/arrow-right.png"></image>
+          </button>
+        </form>
+        <form bindsubmit="finish" hidden="{{!isLast}}">
+          <button class="zbtn done" formType="submit">
+            <text>交卷</text>
+          </button>
+        </form>
+      </view>
+    </view>
+  </view>
+
+  <view class="dt-card" animation="{{dtcardAnimation}}">
+    <view class="seqs" style="height:{{seqsHeight}}px">
+      <view wx:for="{{questionTakes}}" wx:key="*this">
+       <block wx:if="{{item.doQ}}">
+        <view class="doQuestion" bindtap="gotoQuestion" data-seq="{{item.seq}}">
+       {{item.seq}}
+        </view>
+        </block>
+        <block wx:else>
+          <view class="nodoQuestion" bindtap="gotoQuestion" data-seq="{{item.seq}}">
+       {{item.seq}}
+        </view>
+        </block>
+      </view>
+    </view>
+    <view class="fix-foobar" style="background-color:rgba(255,255,255,1);">
+      <view>
+        <icon bindtap="closeDtcard" type="cancel" size="42" color="#aaa"></icon>
+      </view>
+      <form bindsubmit="finish">
+        <button class="weui-btn" type="primary" formType="submit" style="margin-top:9px">交卷并查看结果</button>
+      </form>
+    </view>
+  </view>
+</view>

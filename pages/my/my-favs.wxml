@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="page__hd weui-panel__compact">
+    <view class="weui-panel" wx:for="{{listData}}" wx:key="*this">
+      <view class="weui-panel__bd">
+        <navigator url="../exam/{{item[5] == 1 ? 'explain' : 'explain-rich'}}?id={{item[0]}}" class="weui-media-box rktk-record">
+          <view class="weui-media-box__title has-btn-more">{{item[1]}}</view>
+          <view class="weui-media-box__info">
+            <view class="weui-media-box__info__meta">{{item[2]}} 第{{item[4]}}题</view>
+            <view class="weui-media-box__info__meta weui-media-box__info__meta_extra hide">{{item[3]}}</view>
+          </view>
+          <view class="btn-more" catchtap="moreAction" data-id="{{item[0]}}"><image src="/images/action-more2.png"></image></view>
+        </navigator>
+      </view>
+    </view>
+  </view>
+  
+  <view class="page__bd">
+    <view class="icon-box" hidden="{{!nodata}}">
+      <icon type="info" size="88"></icon>
+      <view class="icon-box__title">暂无收藏</view>
+    </view>
+  </view>
+</view>

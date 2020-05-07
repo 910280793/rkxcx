@@ -1,0 +1,58 @@
+<view class="page">
+  <view class="page__hd">
+    <view class="top-block">
+      <view class="subtitle">{{subject.name}}</view>
+      <view class="title">{{subject.name}}</view>
+      <view class="subtitle infos">
+        考题数 {{question_num}}
+        <block wx:if="{{true}}">
+          <text>/</text> 通过率 {{pass_percent}}%
+          <text>/</text> 满分 {{question_scope}}
+        </block>
+        <block wx:if="{{true}}">
+          <text>/</text> 满分 {{question_scope}}
+        </block>
+        <text>/</text>
+        <block wx:if="{{vip_free == true}}">
+          <text class="color-base2">(VIP免费)</text>
+        </block>
+        <block wx:elif="{{coin > 0}}">
+          {{coin}}学豆<block wx:if="{{subject_type == 2}}">起</block>
+        </block>
+        <block wx:else>
+          <text wx:if="{{coin == 0}}" class="color-base2">免费</text>
+          <text wx:if="{{coin == -1}}" class="color-base2">(限免)</text>
+          <text wx:if="{{coin == -2}}" class="tag-vip">VIP专享</text>
+        </block>
+      </view>
+    </view>
+  </view>
+  <block wx:if="{{true}}">
+    <view class="fix-foobar">
+      <view class="pull-left">
+        <form bindsubmit="toExplain">
+          <button class="weui-btn" type="primary" formType="submit" class="xfree">考题解析
+            <text hidden="{{vip_free == true || explain_free == false || coin == -2}}">(限免)</text>
+          </button>
+        </form>
+      </view>
+      <view class="pull-left">
+        <form bindsubmit="toExam">
+          <button class="weui-btn split" type="primary" formType="submit">开始答题</button>
+        </form>
+      </view>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="highbar warn" wx:if="{{subject_name && is_open == false}}">本题库已下线</view>
+  </block>
+</view>
+<block wx:if="{{is_open == true && subject_type != 3}}">
+  <view class="float-btns">
+    <button class="zbtn" bindtap="shareboxOpen">
+      <image src="../../images/share.png" class="share"></image>
+    </button>
+  </view>
+  <import src="../comps/z-sharebox.wxml" />
+  <template is="z-sharebox" data="{{...shareboxData}}" />
+</block>
